@@ -13,18 +13,14 @@ services:
     networks:
       - default
   influxdb:
-    image: docker.io/bitnami/influxdb:${INFLUXDB_IMAGE_VERSION}
+    image: influxdb:${INFLUXDB_IMAGE_VERSION}
     init: true
     ports:
       - ${INFLUXDB_HTTP_PORT}:8086
-      - ${INFLUXDB_RPC_PORT}:8088
-    environment:
-      - INFLUXDB_ADMIN_USER_PASSWORD=password
-      - INFLUXDB_USER=werner
-      - INFLUXDB_USER_PASSWORD=password
-      - INFLUXDB_DB=telegraf
-    #volumes:
-      #- ${VOLUMES_DIR}/influx/data:/bitnami/influxdb
+      #- ${INFLUXDB_RPC_PORT}:8088
+    volumes:
+      - ${VOLUMES_DIR}/influxdb/data:/var/lib/influxdb
+      - ${VOLUMES_DIR}/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     networks:
       - influxdb
   grafana:
@@ -33,6 +29,7 @@ services:
     ports:
       - ${GRAFANA_PORT}:3000
     volumes:
+      - ${VOLUMES_DIR}/grafana/data:/var/lib/grafana
       - ${VOLUMES_DIR}/grafana/log:/var/log/grafana
     networks:
       - default
