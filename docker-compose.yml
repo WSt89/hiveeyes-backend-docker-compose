@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+  mosquitto:
+    image: eclipse-mosquitto:${MOSQUITTO_IMAGE_VERSION}
+    init: true
+    ports:
+      - ${MOSQUITTO_MQQT_PORT}:1883
+      - ${MOSQUITTO_WS_PORT}:9001
+    volumes:
+      #- ${VOLUMES_DIR}/mosquitto/conf:/mosquitto/config
+      - ${VOLUMES_DIR}/mosquitto/data:/mosquitto/data
+      - ${VOLUMES_DIR}/mosquitto/log:/mosquitto/log
+    networks:
+      - default
+  influxdb:
+    image: docker.io/bitnami/influxdb:${INFLUXDB_IMAGE_VERSION}
+    init: true
+    ports:
+      - ${INFLUXDB_HTTP_PORT}:8086
+      - ${INFLUXDB_RPC_PORT}:8088
+    environment:
+      - INFLUXDB_ADMIN_USER_PASSWORD=password
+      - INFLUXDB_USER=werner
+      - INFLUXDB_USER_PASSWORD=password
+      - INFLUXDB_DB=telegraf
+    #volumes:
+      #- ${VOLUMES_DIR}/influx/data:/bitnami/influxdb
+    networks:
+      - influxdb
+  grafana:
+    image: grafana/grafana:${GRAFANA_IMAGE_VERSION}
+    init: true
+    ports:
+      - ${GRAFANA_PORT}:3000
+    volumes:
+      - ${VOLUMES_DIR}/grafana/log:/var/log/grafana
+    networks:
+      - default
+      - influxdb
+    depends_on: 
+      - influxdb
+  kotori:
+    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
+    init: true
+    ports:
+      - ${KOTORI_PORT}:24642
+    command: "--config /etc/kotori/mqttkit.ini"
+    volumes:
+      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
+    networks:
+      - default
+      - influxdb
+    depends_on:
+      - mosquitto
+      - influxdb
+      - grafana
+networks:
+  influxdb:
