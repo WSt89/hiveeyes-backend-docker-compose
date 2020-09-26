@@ -3,7 +3,7 @@ run [Hiveeyes](https://hiveeyes.org/) backend via docker-compose
 
 ## How to use:
 <ol>
-  <li>run <code>initVolumes.sh</code> to create folder structure for persisting configurations, data and logs</li>
+  <li>run <code>init-volumes.sh</code> to create folder structure for persisting configurations, data and logs</li>
   <li>edit/add config files</li>
   <li>generate <code>mosquitto.passwd</code> file by running <code>mosquitto_passwd -c mosquitto.passwd <username></code> and place it into <em>volumes/mosquitto/conf</em></li>
   <li>edit <code>.env</code> file</li>
