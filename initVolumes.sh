@@ -12,4 +12,4 @@ mkdir ./${VOLUMES_DIR}/influxdb/conf
 mkdir -p ./${VOLUMES_DIR}/grafana/data
 mkdir ./${VOLUMES_DIR}/grafana/log
 
-mkdir -p ./${VOLUMES_DIR}/kotori/conf
+mkdir -p ./${VOLUMES_DIR}/kotori/conf/apps-enabled
