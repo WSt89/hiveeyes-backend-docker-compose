@@ -41,10 +41,10 @@ services:
       - influxdb
   kotori:
     image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
-    init: true
+    #init: true
     ports:
       - ${KOTORI_PORT}:24642
-    command: "--config /etc/kotori/mqttkit.ini"
+    command: "kotori --config /etc/kotori/production.ini"
     volumes:
       - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
     networks:
