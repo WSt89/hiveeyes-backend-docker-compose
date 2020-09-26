@@ -5,7 +5,7 @@ services:
     init: true
     restart: always
     ports:
-      - ${MOSQUITTO_MQQT_PORT}:1883
+      - ${MOSQUITTO_MQTT_PORT}:1883
       - ${MOSQUITTO_WS_PORT}:9001
     volumes:
       - ${VOLUMES_DIR}/mosquitto/conf:/mosquitto/config
