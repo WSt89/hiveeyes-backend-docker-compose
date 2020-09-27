@@ -11,6 +11,3 @@ run [Hiveeyes](https://hiveeyes.org/) backend via docker-compose
   <li>edit <code>.env</code> file (optional)</li>
   <li>run <code>sudo docker-compose up</code></li>
 </ol>
-
-## missing features:
-- grafana persistence
