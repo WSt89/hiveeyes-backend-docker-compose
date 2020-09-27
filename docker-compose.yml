@@ -44,7 +44,7 @@ services:
     restart: always
     ports:
       - ${KOTORI_PORT}:24642
-    command: "kotori --config /etc/kotori/production.ini"
+    command: "kotori --config /etc/kotori/kotori.ini"
     volumes:
       - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
     networks:
