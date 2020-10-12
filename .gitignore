@@ -1,3 +1,16 @@
 data
 *.passwd
 *.log
+/volumes/influxdb/data
+/volumes/grafana/data
+/volumes/grafana/log
+/volumes/influxdb/log
+/volumes/kotori/log
+/volumes/mongodb/log
+/volumes/mongodb/data
+/volumes/mosquitto/data
+/volumes/mosquitto/log
+/volumes/**/*.passwd
+/volumes/nginx/log
+/volumes/nginx/conf.d
+/volumes/redis/data
