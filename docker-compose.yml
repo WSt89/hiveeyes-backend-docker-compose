@@ -1,5 +1,19 @@
-version: '3.7'
+version: '3'
 services:
+
+  kotori:
+    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${KOTORI_PORT}:24642
+    command: "kotori --config /etc/kotori/kotori.ini --debug --debug-io --debug-influx"
+    volumes:
+      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
+    depends_on:
+      - mosquitto
+      - influxdb
+      - grafana
+
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_IMAGE_VERSION}
     init: true
@@ -35,18 +49,6 @@ services:
     depends_on: 
       - influxdb
 
-  kotori:
-    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
-    restart: unless-stopped
-    ports:
-      - ${KOTORI_PORT}:24642
-    command: "kotori --config /etc/kotori/kotori.ini"
-    volumes:
-      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
-    depends_on:
-      - mosquitto
-      - influxdb
-      - grafana
   mongodb:
     image: mongo:${MONGODB_IMAGE_VERSION}
     init: true
@@ -54,12 +56,14 @@ services:
     volumes:
       - ${VOLUMES_DIR}/mongodb/data:/data/db
       - ${VOLUMES_DIR}/mongodb/log:/var/log/mongodb
+
   redis:
     image: redis:${REDIS_IMAGE_VERSION}
     init: true
     restart: always
     volumes:
       - ${VOLUMES_DIR}/redis/data:/data
+
   putsreq:
     image: daqzilla/putsreq:${PUTSREQ_IMAGE_VERSION}
     restart: always
@@ -80,6 +84,7 @@ services:
       - mongodb
       - redis
       - kotori
+
   putsreq_reverse_proxy:
     image: nginx
     init: true
