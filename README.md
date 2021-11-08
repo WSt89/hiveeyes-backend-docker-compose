@@ -7,16 +7,24 @@ Run complete [Hiveeyes] backend using Docker Compose.
 
 ## Usage
 
-### Start backend services
 
-This will start Kotori, Mosquitto, InfluxDB, Grafana, MongoDB, Redis and
-PutsReq.
+### Acquire repository
 
 ```shell
 git clone https://github.com/hiveeyes/hiveeyes-backend-docker
 cd hiveeyes-backend-docker
-docker-compose up
 ```
+
+### Start backend services
+
+The full stack will also provide support for CSV import (MongoDB needed) and
+LoRaWAN/TTN transport. This will start Kotori, Mosquitto, InfluxDB, Grafana,
+MongoDB, Redis and PutsReq.
+```shell
+docker-compose --file=docker-compose-full.yml pull
+docker-compose --file=docker-compose-full.yml up
+```
+
 
 ### Data acquisition examples
 
