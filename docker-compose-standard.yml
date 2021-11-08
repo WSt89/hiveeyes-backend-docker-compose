@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  kotori:
+    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${KOTORI_PORT}:24642
+    command: "kotori --config /etc/kotori/kotori.ini --debug --debug-io --debug-influx"
+    volumes:
+      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
+    depends_on:
+      - mosquitto
+      - influxdb
+      - grafana
+
+  mosquitto:
+    image: eclipse-mosquitto:${MOSQUITTO_IMAGE_VERSION}
+    init: true
+    restart: unless-stopped
+    ports:
+      - ${MOSQUITTO_MQTT_PORT}:1883
+      - ${MOSQUITTO_WS_PORT}:9001
+    volumes:
+      - ${VOLUMES_DIR}/mosquitto/conf:/mosquitto/config
+      - ${VOLUMES_DIR}/mosquitto/data:/mosquitto/data
+      - ${VOLUMES_DIR}/mosquitto/log:/mosquitto/log
+
+  influxdb:
+    image: influxdb:${INFLUXDB_IMAGE_VERSION}
+    init: true
+    restart: unless-stopped
+    ports:
+      - ${INFLUXDB_HTTP_PORT}:8086
+    volumes:
+      - ${VOLUMES_DIR}/influxdb/data:/var/lib/influxdb
+      - ${VOLUMES_DIR}/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_IMAGE_VERSION}
+    init: true
+    user: "1026"
+    restart: unless-stopped
+    ports:
+      - ${GRAFANA_PORT}:3000
+    volumes:
+      - ${VOLUMES_DIR}/grafana/data:/var/lib/grafana
+      - ${VOLUMES_DIR}/grafana/log:/var/log/grafana
+    depends_on: 
+      - influxdb

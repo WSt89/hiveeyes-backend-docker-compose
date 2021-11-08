@@ -17,6 +17,14 @@ cd hiveeyes-backend-docker
 
 ### Start backend services
 
+A minimal set of system components to get started. This will start Kotori,
+Mosquitto, InfluxDB and Grafana.
+
+```shell
+docker-compose --file=docker-compose-standard.yml pull
+docker-compose --file=docker-compose-standard.yml up
+```
+
 The full stack will also provide support for CSV import (MongoDB needed) and
 LoRaWAN/TTN transport. This will start Kotori, Mosquitto, InfluxDB, Grafana,
 MongoDB, Redis and PutsReq.
