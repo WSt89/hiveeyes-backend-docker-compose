@@ -1,4 +1,5 @@
-data
+/data
+/.vagrant
 #*.passwd
 *.log
 /volumes/influxdb/data
