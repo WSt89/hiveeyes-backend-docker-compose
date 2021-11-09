@@ -16,7 +16,6 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_IMAGE_VERSION}
-    init: true
     restart: unless-stopped
     ports:
       - ${MOSQUITTO_MQTT_PORT}:1883
@@ -28,7 +27,6 @@ services:
 
   influxdb:
     image: influxdb:${INFLUXDB_IMAGE_VERSION}
-    init: true
     restart: unless-stopped
     ports:
       - ${INFLUXDB_HTTP_PORT}:8086
@@ -38,7 +36,6 @@ services:
 
   grafana:
     image: grafana/grafana:${GRAFANA_IMAGE_VERSION}
-    init: true
     user: "1026"
     restart: unless-stopped
     ports:
