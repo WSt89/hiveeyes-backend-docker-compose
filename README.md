@@ -175,5 +175,15 @@ software components embedded into this system.
 You are welcome to join the development discussion at
 https://community.hiveeyes.org/t/running-the-hiveeyes-backend-with-docker-compose/3505.
 
+```shell
+brew install vagrant
+brew install --cask virtualbox
+vagrant plugin install vagrant-docker-compose
+vagrant up
+vagrant ssh
+cd /vagrant
+docker-compose --file=docker-compose-standard.yml up
+```
+
 
 [Hiveeyes]: https://hiveeyes.org/
