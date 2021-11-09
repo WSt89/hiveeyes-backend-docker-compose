@@ -22,7 +22,8 @@ Mosquitto, InfluxDB and Grafana.
 
 ```shell
 docker-compose --file=docker-compose-standard.yml pull
-docker-compose --file=docker-compose-standard.yml up
+docker-compose --file=docker-compose-standard.yml up --detach
+docker-compose --file=docker-compose-standard.yml logs --follow
 ```
 
 The full stack will also provide support for CSV import (MongoDB needed) and
@@ -30,7 +31,8 @@ LoRaWAN/TTN transport. This will start Kotori, Mosquitto, InfluxDB, Grafana,
 MongoDB, Redis and PutsReq.
 ```shell
 docker-compose --file=docker-compose-full.yml pull
-docker-compose --file=docker-compose-full.yml up
+docker-compose --file=docker-compose-full.yml up --detach
+docker-compose --file=docker-compose-full.yml logs --follow
 ```
 
 
@@ -175,6 +177,8 @@ software components embedded into this system.
 You are welcome to join the development discussion at
 https://community.hiveeyes.org/t/running-the-hiveeyes-backend-with-docker-compose/3505.
 
+In order to run the backend stack within a Vagrant VirtualBox machine, invoke
+those commands.
 ```shell
 brew install vagrant
 brew install --cask virtualbox
@@ -182,7 +186,8 @@ vagrant plugin install vagrant-docker-compose
 vagrant up
 vagrant ssh
 cd /vagrant
-docker-compose --file=docker-compose-standard.yml up
+docker-compose --file=docker-compose-standard.yml up --detach
+docker-compose --file=docker-compose-standard.yml logs --follow
 ```
 
 
