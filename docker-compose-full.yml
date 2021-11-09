@@ -23,7 +23,6 @@ services:
     volumes:
       - ${VOLUMES_DIR}/mosquitto/conf:/mosquitto/config
       - ${VOLUMES_DIR}/mosquitto/data:/mosquitto/data
-      - ${VOLUMES_DIR}/mosquitto/log:/mosquitto/log
 
   influxdb:
     image: influxdb:${INFLUXDB_IMAGE_VERSION}
