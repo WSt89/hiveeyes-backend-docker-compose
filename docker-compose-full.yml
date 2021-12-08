@@ -1,8 +1,21 @@
-version: '3.7'
+version: '3'
 services:
+
+  kotori:
+    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${KOTORI_PORT}:24642
+    command: "kotori --config /etc/kotori/kotori.ini --debug --debug-io --debug-influx"
+    volumes:
+      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
+    depends_on:
+      - mosquitto
+      - influxdb
+      - grafana
+
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_IMAGE_VERSION}
-    init: true
     restart: unless-stopped
     ports:
       - ${MOSQUITTO_MQTT_PORT}:1883
@@ -10,22 +23,20 @@ services:
     volumes:
       - ${VOLUMES_DIR}/mosquitto/conf:/mosquitto/config
       - ${VOLUMES_DIR}/mosquitto/data:/mosquitto/data
-      - ${VOLUMES_DIR}/mosquitto/log:/mosquitto/log
 
   influxdb:
     image: influxdb:${INFLUXDB_IMAGE_VERSION}
-    init: true
     restart: unless-stopped
     ports:
-      - ${INFLUXDB_HTTP_PORT}:1883
+      - ${INFLUXDB_HTTP_PORT}:8086
     volumes:
       - ${VOLUMES_DIR}/influxdb/data:/var/lib/influxdb
-      - ${VOLUMES_DIR}/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ${VOLUMES_DIR}/influxdb/conf:/etc/influxdb
 
   grafana:
     image: grafana/grafana:${GRAFANA_IMAGE_VERSION}
-    init: true
-    user: "1026"
+    # https://community.grafana.com/t/new-docker-install-with-persistent-storage-permission-problem/10896/15
+    user: "${UID}:${GID}"
     restart: unless-stopped
     ports:
       - ${GRAFANA_PORT}:3000
@@ -35,31 +46,19 @@ services:
     depends_on: 
       - influxdb
 
-  kotori:
-    image: daqzilla/kotori:${KOTORI_IMAGE_VERSION}
-    restart: unless-stopped
-    ports:
-      - ${KOTORI_PORT}:24642
-    command: "kotori --config /etc/kotori/kotori.ini"
-    volumes:
-      - ${VOLUMES_DIR}/kotori/conf:/etc/kotori
-    depends_on:
-      - mosquitto
-      - influxdb
-      - grafana
   mongodb:
     image: mongo:${MONGODB_IMAGE_VERSION}
-    init: true
     restart: always
     volumes:
       - ${VOLUMES_DIR}/mongodb/data:/data/db
       - ${VOLUMES_DIR}/mongodb/log:/var/log/mongodb
+
   redis:
     image: redis:${REDIS_IMAGE_VERSION}
-    init: true
     restart: always
     volumes:
       - ${VOLUMES_DIR}/redis/data:/data
+
   putsreq:
     image: daqzilla/putsreq:${PUTSREQ_IMAGE_VERSION}
     restart: always
@@ -80,9 +79,9 @@ services:
       - mongodb
       - redis
       - kotori
+
   putsreq_reverse_proxy:
     image: nginx
-    init: true
     restart: always
     volumes:
       - ${VOLUMES_DIR}/nginx/templates:/etc/nginx/templates

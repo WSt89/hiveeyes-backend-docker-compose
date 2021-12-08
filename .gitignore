@@ -1,5 +1,6 @@
-data
-*.passwd
+/data
+/.vagrant
+#*.passwd
 *.log
 /volumes/influxdb/data
 /volumes/grafana/data
@@ -10,7 +11,7 @@ data
 /volumes/mongodb/data
 /volumes/mosquitto/data
 /volumes/mosquitto/log
-/volumes/**/*.passwd
+#/volumes/**/*.passwd
 /volumes/nginx/log
 /volumes/nginx/conf.d
 /volumes/redis/data
